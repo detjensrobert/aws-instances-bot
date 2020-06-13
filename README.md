@@ -5,9 +5,14 @@ Discord bot to start and stop aws instances by name.
 ------------
 
 ### Usage
-- `!PREFIX COMMAND USAGE`
+- `!aws start instance_name`
+- `!aws stop instance_name`
 
-	Description of the command here.
+	Starts/stops the instance associated with that name.
+    
+- `!aws status instance_name`
+
+    Replys with the current state of the instance (running, stopped)
 
 ------------
 
@@ -21,10 +26,18 @@ Bot token is read from envvar `BOT_TOKEN` or from file `token.json`. Create if n
 }
 ```
 
+AWS instance IDs file `instance-ids.json`. Create if not present:
+```
+{
+  "instance_name": "i-ABCD1234",
+  "other_instance": "i-WXYZ7890",
+}
+```
+
 Settings file `config.json`:
 ```
 {
-  "prefix": "!"
+  "prefix": "!aws "
   
   // for the log functions, 0-4
   //   0: no logs outputted
@@ -45,7 +58,6 @@ Settings file `config.json`:
   }
 }
 ```
-AWS instance IDs: 
 
 ------------
 
