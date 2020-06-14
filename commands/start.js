@@ -18,11 +18,11 @@ const options = {
 
 async function execute(message, args) {
 	const instance = args.shift().toLowerCase();
-	
+
 	const id = config.instances[`${instance}`];
 
 	log.info(`Starting server ${instance} (${id})`);
-	
+
 	if (!id) {
 		log.error("Instance not found!");
 		message.react('❓');
