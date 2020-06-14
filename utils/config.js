@@ -1,6 +1,15 @@
-// used to have a single instance of config object
-// instead of each command having its own instance
+module.exports = {
 
-const config = require('../config.json');
+	prefix: "!aws ",
 
-module.exports = config;
+	loglevel: 4,
+
+	colors: {
+		success: "#4CAF50",
+		error: "#f44336",
+		info: "#2196F3",
+		warn: "#FFC107",
+	},
+};
+
+module.exports.instances = require('../instance_ids.json');

@@ -1,5 +1,5 @@
 {
-  "name": "AWS Instances Bot",
+  "name": "AWSInstancesBot",
   "version": "1.0.0",
   "description": "Discord bot written in Node.js to start and stop AWS EC2 instances",
   "main": "bot.js",

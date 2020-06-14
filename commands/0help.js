@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
-const { log } = require('../utils/log.js');
+const log = require('../utils/log.js');
+const config = require('../utils/config.js');
 
 const options = {
 
@@ -20,8 +21,6 @@ const options = {
  *   $EXAMPLE
  */
 async function execute(message) {
-	// pull config from client
-	const config = message.client.config;
 
 	log.info("Showing help");
 

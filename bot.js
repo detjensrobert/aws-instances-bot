@@ -65,7 +65,6 @@ client.on('message', message => {
 	if (!command) return;
 
 
-
 	//   ===   CHECK COMMAND OPTIONS   ===
 
 	// role restricted
