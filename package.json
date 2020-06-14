@@ -5,7 +5,7 @@
   "main": "bot.js",
   "scripts": {
     "once": "node .",
-    "start": "pm2 start .",
+    "start": "pm2 start . --name AWSInstances",
     "stop": "pm2 stop .",
     "restart": "pm2 restart .",
     "fix": "npx eslint . --fix",
