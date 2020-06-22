@@ -39,7 +39,7 @@ async function execute(message, args) {
 	// check every 5 seconds if
 	const timeout = 6; // 30s (6 * 5000ms)
 	let status;
-	for (let i = 0; i < timeout || status != 'running'; i++) {
+	for (let i = 0; i < timeout && status != 'running'; i++) {
 		await sleep(5000);
 		status = (await awscli.status(id)).InstanceStatuses[0].InstanceState.Name;
 	}
