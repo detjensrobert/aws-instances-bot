@@ -35,6 +35,30 @@ async function execute(message, args) {
 	const embed = new Discord.MessageEmbed().setColor(config.colors.warn)
 		.setTitle(`Starting \`${instance}\``);
 	message.channel.send(embed);
+
+	// check every 5 seconds if
+	const timeout = 6; // 30s (6 * 5000ms)
+	let status;
+	for (let i = 0; i < timeout || status != 'running'; i++) {
+		await sleep(5000);
+		status = (await awscli.status(id)).InstanceStatuses[0].InstanceState.Name;
+	}
+
+	if (status == 'running') {
+		const successEmbed = new Discord.MessageEmbed().setColor(config.colors.success)
+			.setTitle(`\`${instance}\` has started`);
+		message.channel.send(successEmbed);
+	}
+	else {
+		const errEmbed = new Discord.MessageEmbed().setColor(config.colors.warn)
+			.setTitle(`\`${instance}\` failed to start`);
+		message.channel.send(errEmbed);
+	}
+
+}
+
+function sleep(ms) {
+	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 module.exports = options;
