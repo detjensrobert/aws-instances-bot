@@ -8,24 +8,28 @@ CONFIG = YAML.load_file('config.yml')
 
 bot = Discordrb::Commands::CommandBot.new token: CONFIG['token'], prefix: CONFIG['prefix']
 ec2 = Aws::EC2::Resource.new # pull config details from default aws-cli / ~/.aws
+ec2_client = Aws::EC2::Client.new
 
 bot.command(:start) do |event, name|
   id = CONFIG['instances'][name.to_s]
   next event.message.react '❓' unless id
-  
-  puts "Starting #{id}"
+
+  puts "Starting #{name} (#{id})"
   i = ec2.instance(id)
   if i.exists?
-    case i.state.code
-    when 0 # pending
-      "#{name} is pending, so it will be running in a bit"
-    when 16  # started
-      "#{name} is already started"
-    when 48  # terminated
+    if i.state.code == 48  # terminated
       "#{name} is terminated, so you cannot start it"
     else
       i.start
-      "Starting #{name}"
+      event.channel.send_embed do |embed|
+        embed.title = "Starting #{name}..."
+        embed.color = CONFIG['colors']['pending']
+      end
+      ec2_client.wait_until(:instance_running, instance_ids: [id])
+      event.channel.send_embed do |embed|
+        embed.title = "#{name} has started"
+        embed.color = CONFIG['colors']['running']
+      end
     end
   end
 end
@@ -33,20 +37,23 @@ end
 bot.command(:stop) do |event, name|
   id = CONFIG['instances'][name.to_s]
   next event.message.react '❓' unless id
-  
-  puts "Stopping #{id}"
+
+  puts "Stopping #{name} (#{id})"
   i = ec2.instance(id)
   if i.exists?
-    case i.state.code
-    when 48  # terminated
-      "#{name} is already terminated, so you cannot stop it"
-    when 64  # stopping
-      "#{name} is already stopping"
-    when 80  # stopped
-      "#{name} is already stopped"
+    if i.state.code == 48  # terminated
+      "#{name} is terminated, so you cannot stop it"
     else
       i.stop
-      "Stopping #{name}"
+      event.channel.send_embed do |embed|
+        embed.title = "Stopping #{name}..."
+        embed.color = CONFIG['colors']['stopping']
+      end
+      ec2_client.wait_until(:instance_stopped, instance_ids: [id])
+      event.channel.send_embed do |embed|
+        embed.title = "#{name} has stopped"
+        embed.color = CONFIG['colors']['stopped']
+      end
     end
   else
     event.message.react '❓'
@@ -56,8 +63,8 @@ end
 bot.command(:status) do |event, name|
   id = CONFIG['instances'][name.to_s]
   next event.message.react '❓' unless id
-  
-  puts "Checking status of #{id}"
+
+  puts "Checking status of #{name} (#{id})"
   i = ec2.instance(id)
   if i.exists?
     event.channel.send_embed do |embed|

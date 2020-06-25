@@ -8,11 +8,11 @@ instances:
   second: i-1234567
 
 colors:
-  pending: FFC107
+  pending: D4E157
   running: 8BC34A
   shutting-down: 9C27B0
   terminated: 4A148C
-  stopping: e57373
-  stopped: f44336
+  stopping: FF5722
+  stopped: F44336
   default: 3F51B5
   
