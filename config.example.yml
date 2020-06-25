@@ -1,0 +1,18 @@
+---
+token: TOKEN_HERE
+prefix: '!aws ' # for !aws start name
+#prefix: '!' # for !start name
+
+instances:
+  name: i-abcdxyz
+  second: i-1234567
+
+colors:
+  pending: FFC107
+  running: 8BC34A
+  shutting-down: 9C27B0
+  terminated: 4A148C
+  stopping: e57373
+  stopped: f44336
+  default: 3F51B5
+  
